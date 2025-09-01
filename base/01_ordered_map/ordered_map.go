@@ -1,5 +1,7 @@
 package _1_ordered_map
 
+import "sync"
+
 // 问题：如何在 Go 中按照特定顺序遍历 map,怎么做？
 // 1. 在往map中插入数据前，维持一个key的切片，保证map的顺序，而后在遍历的时候就遍历key的切片，同时从中取出map的value
 // 进阶玩法（比较难，如果没有写过，面试的时候就不要讲）：
@@ -24,4 +26,10 @@ type OrderedMap[K comparable, V any] interface {
 	// Get 根据键获取值。
 	// 返回值和一个布尔值，布尔值表示键是否存在。
 	Get(key K) (V, bool)
+}
+
+type OrderedMapBySlice[K comparable, V any] struct {
+	lock sync.RWMutex
+	data map[K]V
+	keys []K
 }
