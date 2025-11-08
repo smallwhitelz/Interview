@@ -18,10 +18,11 @@ import (
 func foo() {
 	ctx := context.WithValue(context.Background(), "traceId", "11111")
 	bar(ctx)
+	fmt.Println(ctx.Value("traceId")) // 但是这里输出还是111111
 }
 func bar(ctx context.Context) {
-	val := ctx.Value("traceId")
-	fmt.Println(val)
+	val := context.WithValue(ctx, "traceId", "22222").Value("traceId")
+	fmt.Println(val) // 这里已经改为了222222
 }
 
 func timeout() {
@@ -52,7 +53,7 @@ func signal() {
 }
 
 func main() {
-	//foo()
+	foo()
 	//timeout()
-	signal()
+	//signal()
 }

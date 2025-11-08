@@ -59,23 +59,38 @@ func printMemStats(tag string) {
 	)
 }
 
+func channelTest() {
+	ch := make(chan int) // 无缓冲
+	for i := 0; i < 10000; i++ {
+		go func() {
+			// 由于没有接收者，这里会阻塞，goroutine 永远不会退出
+			ch <- 1
+		}()
+	}
+
+	time.Sleep(time.Second)
+	fmt.Println("goroutines:", runtime.NumGoroutine()) // 会很大
+	select {}                                          // 阻塞主 goroutine，程序一直运行
+}
+
 func main() {
 	//sliceTest()
 	// 启动泄露的 goroutine
-	leakGoroutine()
-
-	// 等 goroutine 分配完大切片
-	time.Sleep(200 * time.Millisecond)
-
-	// 第一次打印：应该看到 ~100MB 已被分配
-	printMemStats("Before GC")
-
-	// 强制触发一次垃圾回收
-	runtime.GC()
-
-	// 第二次打印：由于那个 goroutine 还在持有 big，所以内存不会被释放
-	printMemStats("After GC")
-
-	// 阻塞主 goroutine，不退出程序
-	select {}
+	//leakGoroutine()
+	//
+	//// 等 goroutine 分配完大切片
+	//time.Sleep(200 * time.Millisecond)
+	//
+	//// 第一次打印：应该看到 ~100MB 已被分配
+	//printMemStats("Before GC")
+	//
+	//// 强制触发一次垃圾回收
+	//runtime.GC()
+	//
+	//// 第二次打印：由于那个 goroutine 还在持有 big，所以内存不会被释放
+	//printMemStats("After GC")
+	//
+	//// 阻塞主 goroutine，不退出程序
+	//select {}
+	channelTest()
 }

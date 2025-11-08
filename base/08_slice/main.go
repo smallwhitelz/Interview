@@ -10,13 +10,21 @@ import "fmt"
 
 func array() {
 	n := [3]int{1, 2, 3}
-	copyArray(n)
-	fmt.Println(n) // [1 2 3]
+	arr := make([]int, 0, 10) // 如果长度也是10，那么相当于会用int的零值进行初始化10个元素的
+	arr = append(arr, 1)
+	arr = append(arr, 2)
+	arr = append(arr, 3)
+	arr = append(arr, 4)
+	fmt.Println(n, arr) // [1 2 3] [1 2 3 4]
+	copyArray(n, arr)
+	fmt.Println(n, arr) // [1 2 3] [1 9 3 4]
 }
 
-func copyArray(n [3]int) {
+func copyArray(n [3]int, a []int) {
 	n[1] = 5
 	fmt.Println(n) // [1 5 3]
+	a[1] = 9
+	fmt.Println(a) //[1 9 3 4]
 }
 
 func remove() {
@@ -29,5 +37,6 @@ func remove() {
 }
 
 func main() {
-	remove()
+	//remove()
+	array()
 }

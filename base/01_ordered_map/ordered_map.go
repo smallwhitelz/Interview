@@ -1,4 +1,4 @@
-package _1_ordered_map
+package main
 
 import "sync"
 

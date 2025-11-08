@@ -11,7 +11,13 @@ type ConcurrentQueue struct {
 }
 
 func init() {
+
 }
+
+// 无缓冲和有缓冲的区别？
+// 无缓冲的channel如果接受者没有准备好，那么发送者就会阻塞，如果接受者一直收不到数据，接受者也会阻塞
+// 有缓冲的channel，即便接受者没有准备好，发送者也会继续发送直到达到自己的缓冲值，但是接受者一直不阻塞，接受者在缓冲区为空的时候阻塞，
+// 但是发送方不阻塞
 
 // 示例 1：无缓冲 channel
 func unbufferedExample() {
@@ -28,6 +34,7 @@ func unbufferedExample() {
 	fmt.Println("main：准备接收信号（无缓冲）")
 	<-ch
 	fmt.Println("main：已接收信号（无缓冲）")
+	time.Sleep(time.Second)
 }
 
 // 示例 2：缓冲区容量为 1 的 channel
@@ -52,9 +59,9 @@ func bufferedExample() {
 // 未初始化的channel读写都会阻塞
 func channelExample() {
 	// 这是声明一个channel，并不是初始化
-	//var ch chan int
+	var ch chan int
 	// 这是初始化一个缓冲为1的channel
-	ch := make(chan int, 1)
+	//ch := make(chan int, 1)
 	ch <- 1
 	val := <-ch
 	fmt.Println(val)
@@ -79,9 +86,9 @@ func main() {
 	//fmt.Println("=== 无缓冲 channel 示例 ===")
 	//unbufferedExample()
 	//fmt.Println()
-	//
+
 	//fmt.Println("=== 缓冲区为 1 的 channel 示例 ===")
 	//bufferedExample()
-	//channelExample()
-	closeChannel()
+	channelExample()
+	//closeChannel()
 }
